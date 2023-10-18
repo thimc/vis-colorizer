@@ -1,7 +1,7 @@
 local M = {
   text_colors = {
-    dark = "black",
-    light = "white"
+    dark = "#000000",
+    light = "#ffffff"
   }
 }
 
