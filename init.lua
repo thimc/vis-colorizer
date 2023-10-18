@@ -40,7 +40,7 @@ M.extract_hex_colors = function(input_string)
 		if match_start == nil or hex == nil then
 			break
 		end
-		if hex:len() == 6 then
+		if hex:len() == 3 or hex:len() == 6 then
 			table.insert(matches, {
 				starts = match_start,
 				ends = match_end,
@@ -56,11 +56,18 @@ M.draw = function(win, colors)
 	local offset = win.viewport.start
 	for i, color in ipairs(colors) do
 		local fg = M.text_colors.light
+
+		if color.hex:len() == 3 then
+			color.hex = string.gsub(color.hex,
+				"([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])",
+				"%1%1%2%2%3%3")
+		end
+
 		local r = tonumber(color.hex:sub(1, 2), 16)
 		local g = tonumber(color.hex:sub(3, 4), 16)
 		local b = tonumber(color.hex:sub(5, 6), 16)
 
-		if r * 30 + g * 59 + b * 11 > 12000 then
+		if (r * 30) + (g * 59) + (b * 11) > 12000 then
 			fg = M.text_colors.dark
 		end
 
