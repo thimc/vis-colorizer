@@ -2,7 +2,11 @@ local M = {
   text_colors = {
     dark = "#000000",
     light = "#ffffff"
-  }
+  },
+  -- Highlight six digit hex color codes
+  six = true,
+  -- Highlight three digit hex color hexcodes
+  three = false,
 }
 
 local styleIdStack = {}
@@ -40,7 +44,7 @@ M.extract_hex_colors = function(input_string)
 		if match_start == nil or hex == nil then
 			break
 		end
-		if hex:len() == 3 or hex:len() == 6 then
+		if (hex:len() == 3 and M.three)  or (hex:len() == 6 and M.six) then
 			table.insert(matches, {
 				starts = match_start,
 				ends = match_end,
