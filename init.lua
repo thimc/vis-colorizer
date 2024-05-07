@@ -57,7 +57,7 @@ M.extract_hex_colors = function(input_string)
 end
 
 M.draw = function(win, colors)
-	local offset = win.viewport.start
+	local offset = win.viewport['bytes'].start
 	for i, color in ipairs(colors) do
 		local fg = M.text_colors.light
 
@@ -83,14 +83,14 @@ M.draw = function(win, colors)
 		end
 		win:style(id, color.starts - 1 + offset, color.ends - 1 + offset)
 		table.insert(styleIdStack, id)
-		if color.ends >= win.viewport.finish then
+		if color.ends >= win.viewport['bytes'].finish then
 			break
 		end
 	end
 end
 
 M.on_higlight = function(win)
-	local content = win.file:content(win.viewport)
+	local content = win.file:content(win.viewport['bytes'])
 	local hex_colors = M.extract_hex_colors(content)
 	M.draw(win, hex_colors)
 end
