@@ -78,7 +78,7 @@ M.draw = function(win, colors)
 		local id = table.remove(styleIdStack)
 
 		local style = "fore:" .. fg .. ",back:#" .. color.hex
-		if not win:style_define(id, style) then
+		if not vis.ui:style_define(id, style) then
 			break
 		end
 		win:style(id, color.starts - 1 + offset, color.ends - 1 + offset)
