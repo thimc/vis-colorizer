@@ -33,7 +33,7 @@ end
 M.initStyleIds()
 
 M.extract_hex_colors = function(input_string)
-	local pattern = "#([0-9a-fA-F]+)"
+	local pattern = "#?([0-9a-fA-F]+)"
 	local matches = {}
 
 	local init = 1
