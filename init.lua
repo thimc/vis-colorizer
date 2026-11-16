@@ -78,9 +78,11 @@ M.draw = function(win, colors)
 		local id = table.remove(styleIdStack)
 
 		local style = "fore:" .. fg .. ",back:#" .. color.hex
-		if not vis.ui:style_define(id, style) then
-			break
-		end
+	    -- fallback using deprecated win.style_define if vis.ui.style_define not exist
+        if vis.ui.style_define and not vis.ui:style_define(id, style) then 
+            break
+		elseif win.style_define and not win:style_define(id, style) then
+		    break
 		win:style(id, color.starts - 1 + offset, color.ends - 1 + offset)
 		table.insert(styleIdStack, id)
 		if color.ends >= win.viewport['bytes'].finish then
