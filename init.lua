@@ -1,7 +1,8 @@
 local M = {
     text_colors = {
-        dark = "#000000",
-        light = "#ffffff"
+        -- use vis defaults
+        dark = "black",
+        light = "white"
     },
     -- Highlight six digit hex color codes
     six = true,
@@ -18,6 +19,7 @@ for i = 0, 5 do
     hex_map[97 + i] = 10 + i -- a-f
 end
 
+local fstring = string.format
 local byte = string.byte
 
 local function hex_to_rgb(hex)
@@ -91,14 +93,20 @@ M.draw = function(win, colors)
     for i, color in ipairs(colors) do
         local fg = M.text_colors.light
         local r, g, b = hex_to_rgb(color.hex)
+        local style
 
         if (r * 30) + (g * 59) + (b * 11) > 12000 then
             fg = M.text_colors.dark
         end
-
+        
+        -- workaround if terminal doesnt support #000000 #000
+        if r+g+b == 0 then
+            style = fstring("fore:%s,back:black", fg)
+        else
+            style = fstring("fore:%s,back:#%2X%2X%2X", fg, r, g, b)
+        end
         local id = table.remove(styleIdStack)
 
-        local style = "fore:" .. fg .. ",back:#" .. color.hex
         -- fallback using win.style_define if vis.ui.style_define not exist
         if vis.ui.style_define and not vis.ui:style_define(id, style) then 
             break
